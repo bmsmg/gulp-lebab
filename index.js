@@ -1,4 +1,4 @@
-var gutil       = require('gulp-util');
+var PluginError = require('plugin-error');
 var through     = require('through2');
 var transformer = require('lebab');
 
@@ -12,7 +12,7 @@ module.exports = function (options) {
             return callback(null, file);
 
         if (file.isStream())
-            return callback(new gutil.PluginError('gulp-lebab', 'Streaming not supported'));
+            return callback(new PluginError('gulp-lebab', 'Streaming not supported'));
 
         try {
             var output = transformer.transform(file.contents.toString(), [
@@ -38,7 +38,7 @@ module.exports = function (options) {
             this.push(file);
         } 
         catch (err) {
-            this.emit('error', new gutil.PluginError('gulp-lebab', err, {fileName: file.path, showProperties: true, showStack: true}));
+            this.emit('error', new PluginError('gulp-lebab', err, {fileName: file.path, showProperties: true, showStack: true}));
         }
 
         callback();
